@@ -1,11 +1,12 @@
 // Frisson Service Worker
-const CACHE_NAME = 'frisson-v3';
+const CACHE_NAME = 'frisson-v8';
 const urlsToCache = [
   './',
   './index.html',
   './manifest.json',
   './icons/icon-192.png',
-  './icons/icon-512.png'
+  './icons/icon-512.png',
+  './welcome.mp3'
 ];
 
 // Install event - cache resources
