@@ -55,11 +55,11 @@
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      padding: 24px 32px;
-      padding-top: max(24px, calc(env(safe-area-inset-top) + 16px));
-      padding-bottom: max(24px, calc(env(safe-area-inset-bottom) + 16px));
-      padding-left: max(32px, calc(env(safe-area-inset-left) + 32px));
-      padding-right: max(32px, calc(env(safe-area-inset-right) + 32px));
+      padding: 32px 36px;
+      padding-top: max(48px, calc(env(safe-area-inset-top) + 24px));
+      padding-bottom: max(32px, calc(env(safe-area-inset-bottom) + 20px));
+      padding-left: max(36px, calc(env(safe-area-inset-left) + 36px));
+      padding-right: max(36px, calc(env(safe-area-inset-right) + 36px));
       min-height: 100vh;
       min-height: -webkit-fill-available;
     }
@@ -584,6 +584,231 @@
       line-height: 1.5;
       max-width: 260px;
     }
+
+    /* Mode Selection */
+    .mode-selection {
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .mode-btn {
+      width: 100%;
+      padding: 16px 20px;
+      background: white;
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      cursor: pointer;
+      text-align: left;
+      transition: all 0.2s ease;
+    }
+
+    .mode-btn:hover {
+      border-color: var(--gold);
+      box-shadow: 0 4px 16px rgba(201, 169, 98, 0.15);
+    }
+
+    .mode-btn:active {
+      transform: scale(0.98);
+    }
+
+    .mode-btn-title {
+      font-size: 15px;
+      font-weight: 500;
+      color: var(--text-primary);
+      margin-bottom: 4px;
+    }
+
+    .mode-btn-desc {
+      font-size: 11px;
+      color: var(--text-secondary);
+      line-height: 1.4;
+    }
+
+    .mode-btn.primary {
+      background: linear-gradient(135deg, var(--gold) 0%, var(--gold-dark) 100%);
+      border: none;
+      box-shadow: 0 4px 20px rgba(201, 169, 98, 0.3);
+    }
+
+    .mode-btn.primary .mode-btn-title,
+    .mode-btn.primary .mode-btn-desc {
+      color: white;
+    }
+
+    .mode-btn.primary:hover {
+      box-shadow: 0 6px 28px rgba(201, 169, 98, 0.45);
+      transform: translateY(-1px);
+    }
+
+    /* ========== EDUCATIONAL INTRO SCREEN ========== */
+    .intro-screen {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: linear-gradient(180deg, var(--bg) 0%, var(--bg-warm) 100%);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 32px;
+      padding-top: max(48px, calc(env(safe-area-inset-top) + 24px));
+      padding-bottom: max(32px, calc(env(safe-area-inset-bottom) + 20px));
+      z-index: 500;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.4s ease;
+    }
+
+    .intro-screen.visible {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    .intro-content {
+      max-width: 340px;
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 24px;
+    }
+
+    .intro-icon {
+      width: 80px;
+      height: 80px;
+      position: relative;
+    }
+
+    .intro-icon .ring {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      border-radius: 50%;
+      border: 1px solid rgba(201, 169, 98, 0.2);
+    }
+
+    .intro-icon .ring-1 { width: 80px; height: 80px; }
+    .intro-icon .ring-2 { width: 60px; height: 60px; border-color: rgba(201, 169, 98, 0.3); }
+    .intro-icon .ring-3 { width: 40px; height: 40px; border-color: rgba(201, 169, 98, 0.4); }
+
+    .intro-icon .core {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 16px;
+      height: 16px;
+      background: linear-gradient(135deg, var(--gold) 0%, var(--gold-dark) 100%);
+      border-radius: 50%;
+      box-shadow: 0 2px 12px rgba(201, 169, 98, 0.5);
+    }
+
+    .intro-title {
+      font-size: 22px;
+      font-weight: 200;
+      letter-spacing: 4px;
+      color: var(--text-primary);
+    }
+
+    .intro-text {
+      font-size: 14px;
+      line-height: 1.8;
+      color: var(--text-secondary);
+      text-align: left;
+    }
+
+    .intro-text p {
+      margin-bottom: 16px;
+    }
+
+    .intro-text p:last-child {
+      margin-bottom: 0;
+    }
+
+    .intro-buttons {
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      margin-top: 8px;
+    }
+
+    .intro-begin-btn {
+      width: 100%;
+      height: 52px;
+      background: linear-gradient(135deg, var(--gold) 0%, var(--gold-dark) 100%);
+      border: none;
+      border-radius: 26px;
+      color: white;
+      font-size: 15px;
+      font-weight: 500;
+      cursor: pointer;
+      box-shadow: 0 4px 24px rgba(201, 169, 98, 0.35);
+      transition: all 0.2s ease;
+    }
+
+    .intro-begin-btn:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 6px 28px rgba(201, 169, 98, 0.45);
+    }
+
+    .intro-skip-btn {
+      background: none;
+      border: none;
+      font-size: 13px;
+      color: var(--text-muted);
+      cursor: pointer;
+      padding: 8px;
+      transition: color 0.2s ease;
+    }
+
+    .intro-skip-btn:hover {
+      color: var(--text-secondary);
+    }
+
+    /* Manual Controls Layout */
+    .manual-controls {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 24px;
+      width: 100%;
+    }
+
+    .manual-controls .freq-display {
+      margin-bottom: 0;
+    }
+
+    .manual-controls .state-label {
+      margin: 0;
+    }
+
+    .manual-controls .brainwave-guide {
+      margin: 0;
+    }
+
+    .manual-controls .sliders {
+      width: 100%;
+      margin: 0;
+    }
+
+    .manual-controls .timer-section {
+      width: 100%;
+      margin: 0;
+    }
+
+    .manual-controls .play-btn {
+      margin: 0;
+    }
+
+    .manual-controls .notice {
+      margin: 0;
+    }
   </style>
 </head>
 <body>
@@ -602,6 +827,35 @@
     <p class="launch-tagline">Find your frequency</p>
   </div>
 
+  <!-- Educational Intro Screen -->
+  <div class="intro-screen" id="introScreen">
+    <div class="intro-content">
+      <div class="intro-icon">
+        <div class="ring ring-1"></div>
+        <div class="ring ring-2"></div>
+        <div class="ring ring-3"></div>
+        <div class="core"></div>
+      </div>
+
+      <h2 class="intro-title">WELCOME</h2>
+
+      <div class="intro-text">
+        <p>You're about to discover something remarkable — your brain's unique resonant frequency.</p>
+
+        <p>Through your headphones, we'll play a slightly different tone in each ear. Your brain perceives the difference between these tones as a gentle pulse — this is called a binaural beat.</p>
+
+        <p>These beats can guide your brain into specific states. When you sleep, your brain naturally cycles through these frequencies — slow delta waves during deep rest, theta rhythms during REM and dreaming, alpha waves when relaxed but alert.</p>
+
+        <p>Frisson helps you find where <em>your</em> brain responds most powerfully — that moment when you feel a tingle down your spine, a wave of calm, or sudden clarity.</p>
+      </div>
+
+      <div class="intro-buttons">
+        <button class="intro-begin-btn" id="introBeginBtn">Begin Discovery</button>
+        <button class="intro-skip-btn" id="introSkipBtn">Skip Intro</button>
+      </div>
+    </div>
+  </div>
+
   <!-- Main App -->
   <div class="container" id="app">
 
@@ -618,49 +872,63 @@
       <div class="core" id="core"></div>
     </div>
 
-    <div class="freq-display">
-      <div class="freq-item">
-        <div class="freq-value" id="carrierDisplay">132</div>
-        <div class="freq-label">Hz Carrier</div>
-      </div>
-      <div class="freq-divider"></div>
-      <div class="freq-item">
-        <div class="freq-value accent" id="beatDisplay">6.0</div>
-        <div class="freq-label">Hz Beat</div>
-      </div>
+    <!-- Mode Selection (shown initially) -->
+    <div class="mode-selection" id="modeSelection">
+      <button class="mode-btn primary" id="guidedDiscoveryBtn">
+        <div class="mode-btn-title">Guided Discovery</div>
+        <div class="mode-btn-desc">Find your optimal frequency with step-by-step guidance</div>
+      </button>
+      <button class="mode-btn" id="manualModeBtn">
+        <div class="mode-btn-title">Manual Explore</div>
+        <div class="mode-btn-desc">Freely adjust carrier and beat frequencies</div>
+      </button>
     </div>
 
-    <p class="state-label" id="stateLabel">Theta State — Meditation</p>
+    <!-- Manual Mode Controls (hidden initially) -->
+    <div class="manual-controls" id="manualControls" style="display: none;">
+      <div class="freq-display">
+        <div class="freq-item">
+          <div class="freq-value" id="carrierDisplay">132</div>
+          <div class="freq-label">Hz Carrier</div>
+        </div>
+        <div class="freq-divider"></div>
+        <div class="freq-item">
+          <div class="freq-value accent" id="beatDisplay">6.0</div>
+          <div class="freq-label">Hz Beat</div>
+        </div>
+      </div>
 
-    <!-- Brainwave Guide -->
-    <div class="brainwave-guide">
-      <div class="brainwave-item" id="deltaGuide">
-        <div class="brainwave-bar delta"></div>
-        <div class="brainwave-info">
-          <span class="brainwave-name">Delta</span>
-          <span class="brainwave-range">2.5–4 Hz</span>
-        </div>
-        <span class="brainwave-desc">Deep rest</span>
-      </div>
-      <div class="brainwave-item" id="thetaGuide">
-        <div class="brainwave-bar theta"></div>
-        <div class="brainwave-info">
-          <span class="brainwave-name">Theta</span>
-          <span class="brainwave-range">4–8 Hz</span>
-        </div>
-        <span class="brainwave-desc">Meditation</span>
-      </div>
-      <div class="brainwave-item" id="alphaGuide">
-        <div class="brainwave-bar alpha"></div>
-        <div class="brainwave-info">
-          <span class="brainwave-name">Alpha</span>
-          <span class="brainwave-range">8–12 Hz</span>
-        </div>
-        <span class="brainwave-desc">Relaxed focus</span>
-      </div>
-    </div>
+      <p class="state-label" id="stateLabel">Theta State — Meditation</p>
 
-    <div class="sliders">
+      <!-- Brainwave Guide -->
+      <div class="brainwave-guide">
+        <div class="brainwave-item" id="deltaGuide">
+          <div class="brainwave-bar delta"></div>
+          <div class="brainwave-info">
+            <span class="brainwave-name">Delta</span>
+            <span class="brainwave-range">2.5–4 Hz</span>
+          </div>
+          <span class="brainwave-desc">Deep rest</span>
+        </div>
+        <div class="brainwave-item" id="thetaGuide">
+          <div class="brainwave-bar theta"></div>
+          <div class="brainwave-info">
+            <span class="brainwave-name">Theta</span>
+            <span class="brainwave-range">4–8 Hz</span>
+          </div>
+          <span class="brainwave-desc">Meditation</span>
+        </div>
+        <div class="brainwave-item" id="alphaGuide">
+          <div class="brainwave-bar alpha"></div>
+          <div class="brainwave-info">
+            <span class="brainwave-name">Alpha</span>
+            <span class="brainwave-range">8–12 Hz</span>
+          </div>
+          <span class="brainwave-desc">Relaxed focus</span>
+        </div>
+      </div>
+
+      <div class="sliders">
       <div class="slider-group">
         <div class="slider-header">
           <span class="slider-title">Carrier Frequency</span>
@@ -682,34 +950,39 @@
           <div class="slider-thumb" id="beatThumb"></div>
         </div>
       </div>
-    </div>
-
-    <div class="timer-section">
-      <div class="duration-display">
-        <span class="duration-value" id="durationDisplay">15</span>
-        <span class="duration-unit">min</span>
       </div>
-      <div class="slider-group" style="width: 100%;">
-        <div class="slider-header">
-          <span class="slider-title">Duration</span>
-          <span class="slider-range">1–60 min</span>
+
+      <div class="timer-section">
+        <div class="duration-display">
+          <span class="duration-value" id="durationDisplay">15</span>
+          <span class="duration-unit">min</span>
         </div>
-        <div class="slider-track" id="durationSlider">
-          <div class="slider-fill" id="durationFill"></div>
-          <div class="slider-thumb" id="durationThumb"></div>
+        <div class="slider-group" style="width: 100%;">
+          <div class="slider-header">
+            <span class="slider-title">Duration</span>
+            <span class="slider-range">1–60 min</span>
+          </div>
+          <div class="slider-track" id="durationSlider">
+            <div class="slider-fill" id="durationFill"></div>
+            <div class="slider-thumb" id="durationThumb"></div>
+          </div>
         </div>
+        <div class="timer-display" id="timerDisplay">15:00 remaining</div>
       </div>
-      <div class="timer-display" id="timerDisplay">15:00 remaining</div>
+
+      <button class="play-btn" id="playBtn">
+        <span id="playBtnText">Begin Session</span>
+      </button>
+
+      <button class="mode-btn" id="backToModesBtn">
+        <div class="mode-btn-title" style="text-align: center;">← Back to Modes</div>
+      </button>
+
+      <p class="notice">
+        Connect AirPods for best experience.<br>
+        Binaural beats require stereo headphones.
+      </p>
     </div>
-
-    <button class="play-btn" id="playBtn">
-      <span id="playBtnText">Begin Session</span>
-    </button>
-
-    <p class="notice">
-      Connect AirPods for best experience.<br>
-      Binaural beats require stereo headphones.
-    </p>
 
   </div>
 
@@ -782,6 +1055,77 @@
     const deltaGuide = document.getElementById('deltaGuide');
     const thetaGuide = document.getElementById('thetaGuide');
     const alphaGuide = document.getElementById('alphaGuide');
+
+    // Mode selection elements
+    const modeSelection = document.getElementById('modeSelection');
+    const manualControls = document.getElementById('manualControls');
+    const guidedDiscoveryBtn = document.getElementById('guidedDiscoveryBtn');
+    const manualModeBtn = document.getElementById('manualModeBtn');
+    const backToModesBtn = document.getElementById('backToModesBtn');
+    const introScreen = document.getElementById('introScreen');
+    const introBeginBtn = document.getElementById('introBeginBtn');
+    const introSkipBtn = document.getElementById('introSkipBtn');
+
+    // Mode selection handlers
+    function showModeSelection() {
+      if (isPlaying) stopPlaying();
+      modeSelection.style.display = 'flex';
+      manualControls.style.display = 'none';
+    }
+
+    function showManualMode() {
+      modeSelection.style.display = 'none';
+      manualControls.style.display = 'flex';
+      updateUI();
+    }
+
+    // Audio narration for intro
+    let introAudio = null;
+
+    function playIntroAudio() {
+      // Create audio element if not exists
+      if (!introAudio) {
+        introAudio = new Audio('./welcome.mp3');
+        introAudio.preload = 'auto';
+      }
+
+      // Reset and play
+      introAudio.currentTime = 0;
+      introAudio.play().catch(err => {
+        console.log('Frisson: Audio playback requires user interaction', err);
+      });
+    }
+
+    function stopIntroAudio() {
+      if (introAudio) {
+        introAudio.pause();
+        introAudio.currentTime = 0;
+      }
+    }
+
+    function showIntroScreen() {
+      introScreen.classList.add('visible');
+      // Start narration after a brief delay
+      setTimeout(playIntroAudio, 600);
+    }
+
+    function hideIntroScreen() {
+      introScreen.classList.remove('visible');
+      stopIntroAudio();
+    }
+
+    function startGuidedDiscovery() {
+      hideIntroScreen();
+      // For now, go to manual mode - guided discovery will be built out next
+      showManualMode();
+    }
+
+    // Mode button event listeners
+    guidedDiscoveryBtn.addEventListener('click', showIntroScreen);
+    manualModeBtn.addEventListener('click', showManualMode);
+    backToModesBtn.addEventListener('click', showModeSelection);
+    introBeginBtn.addEventListener('click', startGuidedDiscovery);
+    introSkipBtn.addEventListener('click', startGuidedDiscovery);
 
     // Initialize Audio Context
     function initAudio() {
