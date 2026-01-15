@@ -1,0 +1,1087 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Frisson - App Design Concept</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    :root {
+      --gold: #C9A962;
+      --gold-dark: #A68B4B;
+      --text-primary: #1A1A1A;
+      --text-secondary: #8A8A8A;
+      --text-muted: #B0B0B0;
+      --bg-light: #FAFAFA;
+      --bg-warm: #F5F3EE;
+      --border: #E8E6E1;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Helvetica Neue', Helvetica, Arial, sans-serif;
+      background: var(--bg-warm);
+      min-height: 100vh;
+    }
+
+    .presentation {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 40px 20px;
+    }
+
+    .slide {
+      background: var(--bg-light);
+      border-radius: 16px;
+      margin-bottom: 40px;
+      overflow: hidden;
+      box-shadow: 0 4px 24px rgba(0,0,0,0.08);
+    }
+
+    .slide-content {
+      padding: 48px;
+    }
+
+    .slide-header {
+      margin-bottom: 32px;
+    }
+
+    .slide-label {
+      font-size: 11px;
+      letter-spacing: 2px;
+      color: var(--gold);
+      text-transform: uppercase;
+      margin-bottom: 8px;
+    }
+
+    .slide-title {
+      font-size: 32px;
+      font-weight: 200;
+      color: var(--text-primary);
+      line-height: 1.3;
+    }
+
+    .slide-subtitle {
+      font-size: 14px;
+      color: var(--text-secondary);
+      margin-top: 12px;
+      line-height: 1.6;
+    }
+
+    /* Cover Slide */
+    .cover-slide {
+      background: linear-gradient(180deg, #FAFAFA 0%, #F5F3EE 100%);
+      text-align: center;
+      padding: 80px 48px;
+    }
+
+    .logo-mark {
+      width: 80px;
+      height: 80px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--gold) 0%, var(--gold-dark) 100%);
+      margin: 0 auto 40px;
+      box-shadow: 0 8px 32px rgba(201, 169, 98, 0.3);
+    }
+
+    .app-name {
+      font-size: 64px;
+      font-weight: 200;
+      letter-spacing: 8px;
+      color: var(--text-primary);
+    }
+
+    .tagline {
+      font-size: 14px;
+      letter-spacing: 3px;
+      color: var(--text-secondary);
+      text-transform: uppercase;
+      margin-top: 16px;
+    }
+
+    /* Two Column Layout */
+    .two-col {
+      display: flex;
+      gap: 48px;
+    }
+
+    .col-text {
+      flex: 1;
+    }
+
+    .col-visual {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    /* iPhone Mockup */
+    .iphone {
+      width: 260px;
+      height: 520px;
+      background: #1A1A1A;
+      border-radius: 44px;
+      padding: 14px;
+      box-shadow: 0 24px 48px rgba(0,0,0,0.15);
+    }
+
+    .iphone-screen {
+      width: 100%;
+      height: 100%;
+      background: var(--bg-light);
+      border-radius: 34px;
+      position: relative;
+      overflow: hidden;
+      padding: 56px 20px 20px;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .iphone-notch {
+      position: absolute;
+      top: 14px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 72px;
+      height: 24px;
+      background: #1A1A1A;
+      border-radius: 14px;
+    }
+
+    .iphone-indicator {
+      position: absolute;
+      bottom: 10px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 120px;
+      height: 5px;
+      background: #1A1A1A;
+      border-radius: 3px;
+    }
+
+    /* Design Principles */
+    .principle {
+      border-left: 2px solid var(--gold);
+      padding-left: 20px;
+      margin-bottom: 24px;
+    }
+
+    .principle-title {
+      font-size: 14px;
+      font-weight: 500;
+      color: var(--text-primary);
+      margin-bottom: 6px;
+    }
+
+    .principle-desc {
+      font-size: 13px;
+      color: var(--text-secondary);
+      line-height: 1.6;
+    }
+
+    /* Feature Cards */
+    .feature-cards {
+      display: flex;
+      gap: 24px;
+    }
+
+    .feature-card {
+      flex: 1;
+      background: white;
+      border-radius: 16px;
+      padding: 28px 24px;
+      box-shadow: 0 2px 16px rgba(0,0,0,0.04);
+    }
+
+    .feature-number {
+      width: 48px;
+      height: 48px;
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 20px;
+      margin-bottom: 20px;
+    }
+
+    .feature-number.primary {
+      background: linear-gradient(135deg, var(--gold) 0%, var(--gold-dark) 100%);
+      color: white;
+    }
+
+    .feature-number.secondary {
+      background: var(--bg-warm);
+      color: var(--gold);
+      border: 1px solid var(--border);
+    }
+
+    .feature-title {
+      font-size: 15px;
+      font-weight: 500;
+      color: var(--text-primary);
+      margin-bottom: 8px;
+    }
+
+    .feature-desc {
+      font-size: 12px;
+      color: var(--text-secondary);
+      line-height: 1.6;
+    }
+
+    /* Concentric Circles */
+    .circles {
+      position: relative;
+      width: 200px;
+      height: 200px;
+    }
+
+    .circle {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      border-radius: 50%;
+    }
+
+    .circle-1 { width: 200px; height: 200px; border: 1px solid rgba(201, 169, 98, 0.15); }
+    .circle-2 { width: 150px; height: 150px; border: 1px solid rgba(201, 169, 98, 0.25); }
+    .circle-3 { width: 100px; height: 100px; border: 1px solid rgba(201, 169, 98, 0.4); }
+    .circle-4 { width: 50px; height: 50px; border: 2px solid rgba(201, 169, 98, 0.6); }
+    .circle-core { width: 16px; height: 16px; background: var(--gold); }
+
+    /* Color Swatches */
+    .color-swatches {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .color-swatch {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+
+    .swatch-color {
+      width: 40px;
+      height: 40px;
+      border-radius: 10px;
+    }
+
+    .swatch-info {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .swatch-name {
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--text-primary);
+    }
+
+    .swatch-hex {
+      font-size: 11px;
+      color: var(--text-secondary);
+      font-family: 'SF Mono', Monaco, monospace;
+    }
+
+    /* Screen mockup content */
+    .screen-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 20px;
+    }
+
+    .screen-title {
+      font-size: 20px;
+      font-weight: 200;
+      letter-spacing: 2px;
+      color: var(--text-primary);
+    }
+
+    .screen-cards {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      flex: 1;
+    }
+
+    .screen-card {
+      background: white;
+      border-radius: 14px;
+      padding: 18px;
+      flex: 1;
+    }
+
+    .screen-card.primary {
+      background: linear-gradient(135deg, var(--gold) 0%, var(--gold-dark) 100%);
+      box-shadow: 0 4px 20px rgba(201, 169, 98, 0.25);
+    }
+
+    .screen-card.primary .card-title {
+      color: white;
+    }
+
+    .screen-card.primary .card-desc {
+      color: rgba(255,255,255,0.8);
+    }
+
+    .card-title {
+      font-size: 14px;
+      font-weight: 500;
+      color: var(--text-primary);
+      margin-bottom: 4px;
+    }
+
+    .card-desc {
+      font-size: 11px;
+      color: var(--text-secondary);
+    }
+
+    /* Frequency Display */
+    .freq-display {
+      display: flex;
+      justify-content: center;
+      gap: 24px;
+      margin-bottom: 24px;
+    }
+
+    .freq-item {
+      text-align: center;
+    }
+
+    .freq-label {
+      font-size: 9px;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    .freq-value {
+      font-size: 22px;
+      font-weight: 200;
+      color: var(--text-primary);
+      margin-top: 4px;
+    }
+
+    .freq-value.accent {
+      color: var(--gold);
+    }
+
+    .freq-divider {
+      width: 1px;
+      height: 36px;
+      background: var(--border);
+      align-self: center;
+    }
+
+    /* Button */
+    .btn {
+      width: 100%;
+      height: 52px;
+      border-radius: 26px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 14px;
+      font-weight: 500;
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, var(--gold) 0%, var(--gold-dark) 100%);
+      color: white;
+      box-shadow: 0 4px 20px rgba(201, 169, 98, 0.35);
+    }
+
+    .btn-dark {
+      background: var(--text-primary);
+      color: white;
+    }
+
+    /* Progress bar */
+    .progress-bar {
+      width: 100%;
+      height: 3px;
+      background: var(--border);
+      border-radius: 2px;
+      margin-bottom: 8px;
+    }
+
+    .progress-fill {
+      height: 100%;
+      background: var(--gold);
+      border-radius: 2px;
+    }
+
+    .progress-time {
+      font-size: 10px;
+      color: var(--text-muted);
+      text-align: center;
+      margin-bottom: 16px;
+    }
+
+    /* Timer Ring */
+    .timer-ring {
+      position: relative;
+      width: 160px;
+      height: 160px;
+      margin: 0 auto;
+    }
+
+    .timer-ring svg {
+      transform: rotate(-90deg);
+    }
+
+    .timer-ring circle {
+      fill: none;
+      stroke-width: 2;
+    }
+
+    .timer-bg {
+      stroke: var(--border);
+    }
+
+    .timer-progress {
+      stroke: var(--gold);
+      stroke-linecap: round;
+    }
+
+    .timer-center {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      text-align: center;
+    }
+
+    .timer-core {
+      width: 24px;
+      height: 24px;
+      background: linear-gradient(135deg, var(--gold), var(--gold-dark));
+      border-radius: 50%;
+      margin: 0 auto 16px;
+      box-shadow: 0 0 20px rgba(201, 169, 98, 0.4);
+    }
+
+    .timer-time {
+      font-size: 28px;
+      font-weight: 200;
+      color: var(--text-primary);
+    }
+
+    .timer-label {
+      font-size: 10px;
+      color: var(--text-muted);
+      margin-top: 4px;
+    }
+
+    /* Navigation */
+    nav {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      background: rgba(250, 250, 250, 0.95);
+      backdrop-filter: blur(10px);
+      padding: 16px 40px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      z-index: 100;
+      border-bottom: 1px solid var(--border);
+    }
+
+    nav .logo {
+      font-size: 18px;
+      font-weight: 200;
+      letter-spacing: 3px;
+      color: var(--text-primary);
+    }
+
+    nav .nav-info {
+      font-size: 12px;
+      color: var(--text-secondary);
+    }
+
+    .presentation {
+      padding-top: 100px;
+    }
+
+    /* Design system grid */
+    .design-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 32px;
+    }
+
+    .design-section h3 {
+      font-size: 11px;
+      font-weight: 500;
+      color: var(--text-primary);
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      margin-bottom: 20px;
+    }
+
+    /* Next steps */
+    .steps-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 20px;
+    }
+
+    .step-card {
+      background: white;
+      border-radius: 16px;
+      padding: 24px;
+      border: 1px solid var(--border);
+      display: flex;
+      gap: 16px;
+    }
+
+    .step-number {
+      width: 36px;
+      height: 36px;
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 16px;
+      font-weight: 500;
+      flex-shrink: 0;
+    }
+
+    .step-number.active {
+      background: linear-gradient(135deg, var(--gold) 0%, var(--gold-dark) 100%);
+      color: white;
+    }
+
+    .step-number.inactive {
+      background: var(--bg-warm);
+      color: var(--gold);
+      border: 1px solid var(--border);
+    }
+
+    .step-title {
+      font-size: 14px;
+      font-weight: 500;
+      color: var(--text-primary);
+      margin-bottom: 6px;
+    }
+
+    .step-desc {
+      font-size: 12px;
+      color: var(--text-secondary);
+      line-height: 1.6;
+    }
+
+    .note-card {
+      background: rgba(201, 169, 98, 0.08);
+      border-radius: 16px;
+      padding: 20px;
+      border-left: 3px solid var(--gold);
+      grid-column: span 2;
+    }
+
+    .note-label {
+      font-size: 11px;
+      font-weight: 500;
+      color: var(--gold);
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      margin-bottom: 6px;
+    }
+
+    .note-text {
+      font-size: 12px;
+      color: var(--text-secondary);
+      line-height: 1.6;
+    }
+
+    /* Slider mockup */
+    .slider-track {
+      width: 100%;
+      height: 32px;
+      background: var(--bg-warm);
+      border-radius: 16px;
+      position: relative;
+      margin: 8px 0;
+    }
+
+    .slider-fill {
+      position: absolute;
+      left: 0;
+      top: 0;
+      height: 100%;
+      background: linear-gradient(90deg, var(--gold), #E5D4A1);
+      border-radius: 16px;
+    }
+
+    .slider-thumb {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 28px;
+      height: 28px;
+      background: white;
+      border-radius: 50%;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+    }
+
+    .slider-label {
+      display: flex;
+      justify-content: space-between;
+      font-size: 10px;
+      color: var(--text-secondary);
+    }
+  </style>
+</head>
+<body>
+
+<nav>
+  <span class="logo">FRISSON</span>
+  <span class="nav-info">App Design Concept • Preston Pysh</span>
+</nav>
+
+<div class="presentation">
+
+  <!-- Slide 1: Cover -->
+  <div class="slide">
+    <div class="cover-slide">
+      <div class="logo-mark"></div>
+      <h1 class="app-name">FRISSON</h1>
+      <p class="tagline">Find Your Frequency</p>
+    </div>
+  </div>
+
+  <!-- Slide 2: Philosophy -->
+  <div class="slide">
+    <div class="slide-content two-col">
+      <div class="col-text">
+        <div class="slide-header">
+          <p class="slide-label">Design Philosophy</p>
+          <h2 class="slide-title">Less interface.<br>More resonance.</h2>
+        </div>
+
+        <div class="principle">
+          <p class="principle-title">Minimal by intention</p>
+          <p class="principle-desc">No ambient sounds. No guided voices during sessions. No visual clutter. Just pure sine waves and your awareness.</p>
+        </div>
+
+        <div class="principle">
+          <p class="principle-title">Personal by design</p>
+          <p class="principle-desc">Your brainwave frequencies are unique. Frisson helps you discover the specific combinations that create resonance in your body.</p>
+        </div>
+
+        <div class="principle">
+          <p class="principle-title">Physical feedback</p>
+          <p class="principle-desc">That tingle you feel when frequencies align? We call it frisson. The app is built around capturing and recreating that moment.</p>
+        </div>
+      </div>
+
+      <div class="col-visual">
+        <div class="circles">
+          <div class="circle circle-1"></div>
+          <div class="circle circle-2"></div>
+          <div class="circle circle-3"></div>
+          <div class="circle circle-4"></div>
+          <div class="circle circle-core"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Slide 3: App Structure -->
+  <div class="slide">
+    <div class="slide-content">
+      <div class="slide-header">
+        <p class="slide-label">App Structure</p>
+        <h2 class="slide-title">Three paths. One purpose.</h2>
+      </div>
+
+      <div class="feature-cards">
+        <div class="feature-card">
+          <div class="feature-number primary">1</div>
+          <h3 class="feature-title">Guided Discovery</h3>
+          <p class="feature-desc">A voice-led 25-minute protocol that systematically explores frequency combinations. Tap to mark when you feel frisson.</p>
+          <p style="font-size: 10px; color: #B0B0B0; margin-top: 16px; padding-top: 12px; border-top: 1px solid #F0EDE8;">Best for first-time users</p>
+        </div>
+
+        <div class="feature-card">
+          <div class="feature-number secondary">2</div>
+          <h3 class="feature-title">Manual Discovery</h3>
+          <p class="feature-desc">Free exploration with real-time controls. Adjust carrier frequency and beat frequency. Mark discoveries as you find them.</p>
+          <p style="font-size: 10px; color: #B0B0B0; margin-top: 16px; padding-top: 12px; border-top: 1px solid #F0EDE8;">For experienced explorers</p>
+        </div>
+
+        <div class="feature-card">
+          <div class="feature-number secondary">3</div>
+          <h3 class="feature-title">Session Mode</h3>
+          <p class="feature-desc">Meditate with your discovered frequencies. Choose duration from 1-60 minutes. Pure tones, minimal interface.</p>
+          <p style="font-size: 10px; color: #B0B0B0; margin-top: 16px; padding-top: 12px; border-top: 1px solid #F0EDE8;">Daily practice</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Slide 4: Home Screen -->
+  <div class="slide">
+    <div class="slide-content two-col">
+      <div class="col-text">
+        <div class="slide-header">
+          <p class="slide-label">Home Screen</p>
+          <h2 class="slide-title">Three clear paths forward</h2>
+          <p class="slide-subtitle">The home screen presents three options without hierarchy clutter. The Guided Discovery card is emphasized for new users. Once they have saved frequencies, the Session card becomes more prominent.</p>
+        </div>
+
+        <div class="principle">
+          <p class="principle-title">Design note</p>
+          <p class="principle-desc">Cards use generous padding and subtle shadows. Touch targets are large. The settings icon is minimal and tucked away—this is not a settings-heavy app.</p>
+        </div>
+      </div>
+
+      <div class="col-visual">
+        <div class="iphone">
+          <div class="iphone-screen">
+            <div class="iphone-notch"></div>
+
+            <div class="screen-header">
+              <span class="screen-title">FRISSON</span>
+              <div style="width: 28px; height: 28px; border: 1px solid #E0DDD8; border-radius: 50%;"></div>
+            </div>
+
+            <div class="screen-cards">
+              <div class="screen-card primary" style="flex: 1.2;">
+                <p class="card-title">Guided Discovery</p>
+                <p class="card-desc">25 min voice-led protocol</p>
+                <p style="font-size: 9px; color: rgba(255,255,255,0.6); margin-top: 12px;">Recommended for you</p>
+              </div>
+
+              <div class="screen-card" style="border: 1px solid #E8E6E1;">
+                <p class="card-title">Manual Discovery</p>
+                <p class="card-desc">Free exploration</p>
+              </div>
+
+              <div class="screen-card" style="border: 1px solid #E8E6E1;">
+                <p class="card-title">Session</p>
+                <p class="card-desc">Meditate with your frequencies</p>
+              </div>
+            </div>
+
+            <div class="iphone-indicator"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Slide 5: Guided Discovery -->
+  <div class="slide">
+    <div class="slide-content two-col">
+      <div class="col-text">
+        <div class="slide-header">
+          <p class="slide-label">Guided Discovery Protocol</p>
+          <h2 class="slide-title">The discovery experience</h2>
+          <p class="slide-subtitle">A calm male voice guides users through frequency combinations. The interface is radically simple: a central visual that subtly pulses with the binaural beat, and a single prominent button to mark frisson moments.</p>
+        </div>
+
+        <div class="principle">
+          <p class="principle-title">Voice guidance</p>
+          <p class="principle-desc">"We're now exploring 6 Hz with a 150 Hz carrier. Notice any sensations in your body. If you feel that subtle tingle or wave, tap the circle."</p>
+        </div>
+      </div>
+
+      <div class="col-visual">
+        <div class="iphone">
+          <div class="iphone-screen">
+            <div class="iphone-notch"></div>
+
+            <div class="progress-bar">
+              <div class="progress-fill" style="width: 35%;"></div>
+            </div>
+            <p class="progress-time">16:42 remaining</p>
+
+            <div class="freq-display">
+              <div class="freq-item">
+                <p class="freq-label">Carrier</p>
+                <p class="freq-value">150 Hz</p>
+              </div>
+              <div class="freq-divider"></div>
+              <div class="freq-item">
+                <p class="freq-label">Beat</p>
+                <p class="freq-value accent">6 Hz</p>
+              </div>
+            </div>
+
+            <div style="flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center;">
+              <div class="circles" style="width: 120px; height: 120px; margin-bottom: 16px;">
+                <div class="circle" style="width: 120px; height: 120px; border: 1px solid rgba(201, 169, 98, 0.1);"></div>
+                <div class="circle" style="width: 90px; height: 90px; border: 1px solid rgba(201, 169, 98, 0.2);"></div>
+                <div class="circle" style="width: 60px; height: 60px; border: 1px solid rgba(201, 169, 98, 0.35);"></div>
+                <div class="circle" style="width: 32px; height: 32px; background: linear-gradient(135deg, #C9A962, #A68B4B); box-shadow: 0 4px 16px rgba(201, 169, 98, 0.4);"></div>
+              </div>
+              <p style="font-size: 10px; color: #8A8A8A; letter-spacing: 1px; text-transform: uppercase;">Theta State</p>
+            </div>
+
+            <div class="btn btn-primary">Mark Frisson</div>
+
+            <div class="iphone-indicator"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Slide 6: Manual Discovery -->
+  <div class="slide">
+    <div class="slide-content two-col">
+      <div class="col-text">
+        <div class="slide-header">
+          <p class="slide-label">Manual Discovery Mode</p>
+          <h2 class="slide-title">Free exploration</h2>
+          <p class="slide-subtitle">For experienced users who want direct control. Two elegant sliders with haptic feedback at key intervals. The carrier frequency slider (100-400 Hz) controls the base tone. The beat frequency slider (4-8 Hz) controls the binaural difference.</p>
+        </div>
+
+        <div class="principle">
+          <p class="principle-title">Interaction design</p>
+          <p class="principle-desc">Sliders have physical weight—they decelerate naturally when released. Subtle haptic ticks at each Hz. The central visualization responds in real-time to frequency changes.</p>
+        </div>
+      </div>
+
+      <div class="col-visual">
+        <div class="iphone">
+          <div class="iphone-screen">
+            <div class="iphone-notch"></div>
+
+            <p style="font-size: 14px; text-align: center; margin-bottom: 16px;">Manual Discovery</p>
+
+            <div style="flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center;">
+              <div class="circles" style="width: 100px; height: 100px; margin-bottom: 16px;">
+                <div class="circle" style="width: 100px; height: 100px; border: 1px solid rgba(201, 169, 98, 0.15);"></div>
+                <div class="circle" style="width: 70px; height: 70px; border: 1px solid rgba(201, 169, 98, 0.25);"></div>
+                <div class="circle" style="width: 40px; height: 40px; border: 1px solid rgba(201, 169, 98, 0.4);"></div>
+                <div class="circle" style="width: 20px; height: 20px; background: linear-gradient(135deg, #C9A962, #A68B4B);"></div>
+              </div>
+
+              <div class="freq-display">
+                <div class="freq-item">
+                  <p class="freq-value">175</p>
+                  <p class="freq-label">Hz Carrier</p>
+                </div>
+                <div class="freq-divider"></div>
+                <div class="freq-item">
+                  <p class="freq-value accent">6.5</p>
+                  <p class="freq-label">Hz Beat</p>
+                </div>
+              </div>
+            </div>
+
+            <div style="margin-bottom: 16px;">
+              <div class="slider-label">
+                <span>Carrier Frequency</span>
+                <span>100-400 Hz</span>
+              </div>
+              <div class="slider-track">
+                <div class="slider-fill" style="width: 25%;"></div>
+                <div class="slider-thumb" style="left: calc(25% - 14px);"></div>
+              </div>
+
+              <div class="slider-label" style="margin-top: 12px;">
+                <span>Beat Frequency (Theta)</span>
+                <span>4-8 Hz</span>
+              </div>
+              <div class="slider-track">
+                <div class="slider-fill" style="width: 62%;"></div>
+                <div class="slider-thumb" style="left: calc(62% - 14px);"></div>
+              </div>
+            </div>
+
+            <div class="btn btn-primary" style="height: 48px;">Mark Frisson</div>
+
+            <div class="iphone-indicator"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Slide 7: Session Active -->
+  <div class="slide">
+    <div class="slide-content two-col">
+      <div class="col-text">
+        <div class="slide-header">
+          <p class="slide-label">Session Mode • Active</p>
+          <h2 class="slide-title">Pure meditation</h2>
+          <p class="slide-subtitle">The session screen is radically minimal. A circular progress arc shows time remaining. The central dot pulses gently with the binaural beat. Nothing else. The screen dims after 5 seconds of inactivity but stays on to provide ambient visual.</p>
+        </div>
+
+        <div class="principle">
+          <p class="principle-title">Screen behavior</p>
+          <p class="principle-desc">Tap anywhere to reveal controls (pause, end early). The arc is the only moving element—it progresses imperceptibly slowly, creating calm rather than urgency.</p>
+        </div>
+      </div>
+
+      <div class="col-visual">
+        <div class="iphone">
+          <div class="iphone-screen" style="justify-content: center; align-items: center;">
+            <div class="iphone-notch"></div>
+
+            <div class="timer-ring">
+              <svg width="160" height="160" viewBox="0 0 160 160">
+                <circle class="timer-bg" cx="80" cy="80" r="76"/>
+                <circle class="timer-progress" cx="80" cy="80" r="76"
+                        stroke-dasharray="477" stroke-dashoffset="286"/>
+              </svg>
+              <div class="timer-center">
+                <div class="timer-core"></div>
+                <p class="timer-time">9:12</p>
+                <p class="timer-label">remaining</p>
+              </div>
+            </div>
+
+            <p style="position: absolute; bottom: 48px; font-size: 11px; color: #B0B0B0;">150 Hz • 6 Hz theta</p>
+
+            <div class="iphone-indicator"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Slide 8: Design System -->
+  <div class="slide">
+    <div class="slide-content">
+      <div class="slide-header">
+        <p class="slide-label">Design System</p>
+        <h2 class="slide-title">Visual language</h2>
+      </div>
+
+      <div class="design-grid">
+        <div class="design-section">
+          <h3>Colors</h3>
+          <div class="color-swatches">
+            <div class="color-swatch">
+              <div class="swatch-color" style="background: #C9A962;"></div>
+              <div class="swatch-info">
+                <span class="swatch-name">Gold Accent</span>
+                <span class="swatch-hex">#C9A962</span>
+              </div>
+            </div>
+            <div class="color-swatch">
+              <div class="swatch-color" style="background: #A68B4B;"></div>
+              <div class="swatch-info">
+                <span class="swatch-name">Gold Dark</span>
+                <span class="swatch-hex">#A68B4B</span>
+              </div>
+            </div>
+            <div class="color-swatch">
+              <div class="swatch-color" style="background: #1A1A1A;"></div>
+              <div class="swatch-info">
+                <span class="swatch-name">Primary Text</span>
+                <span class="swatch-hex">#1A1A1A</span>
+              </div>
+            </div>
+            <div class="color-swatch">
+              <div class="swatch-color" style="background: #8A8A8A;"></div>
+              <div class="swatch-info">
+                <span class="swatch-name">Secondary Text</span>
+                <span class="swatch-hex">#8A8A8A</span>
+              </div>
+            </div>
+            <div class="color-swatch">
+              <div class="swatch-color" style="background: #FAFAFA; border: 1px solid #E8E6E1;"></div>
+              <div class="swatch-info">
+                <span class="swatch-name">Background</span>
+                <span class="swatch-hex">#FAFAFA</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="design-section">
+          <h3>Typography</h3>
+          <div style="margin-bottom: 16px;">
+            <p style="font-size: 28px; font-weight: 200; color: #1A1A1A;">Helvetica</p>
+            <p style="font-size: 11px; color: #8A8A8A; margin-top: 4px;">Display • Weight 200</p>
+          </div>
+          <div style="margin-bottom: 16px;">
+            <p style="font-size: 16px; font-weight: 300; color: #1A1A1A;">Body text sample</p>
+            <p style="font-size: 11px; color: #8A8A8A; margin-top: 4px;">Body • Weight 300</p>
+          </div>
+          <div>
+            <p style="font-size: 11px; font-weight: 500; color: #1A1A1A; letter-spacing: 2px; text-transform: uppercase;">LABEL TEXT</p>
+            <p style="font-size: 11px; color: #8A8A8A; margin-top: 4px;">Labels • Weight 500</p>
+          </div>
+        </div>
+
+        <div class="design-section">
+          <h3>Components</h3>
+          <div class="btn btn-primary" style="margin-bottom: 12px; height: 44px;">Primary Button</div>
+          <div class="btn btn-dark" style="margin-bottom: 12px; height: 44px;">Secondary Button</div>
+          <div style="background: white; border-radius: 12px; padding: 14px; border: 1px solid #E8E6E1; margin-bottom: 12px;">
+            <p style="font-size: 13px; font-weight: 500; color: #1A1A1A;">Card Component</p>
+            <p style="font-size: 11px; color: #8A8A8A; margin-top: 4px;">16px radius, 1px border</p>
+          </div>
+          <div style="background: rgba(201, 169, 98, 0.1); border-radius: 8px; padding: 8px 12px; display: inline-block;">
+            <p style="font-size: 12px; color: #C9A962; margin: 0;">150 Hz / 6 Hz</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Slide 9: Next Steps -->
+  <div class="slide">
+    <div class="slide-content">
+      <div class="slide-header">
+        <p class="slide-label">Next Steps</p>
+        <h2 class="slide-title">From design to device</h2>
+      </div>
+
+      <div class="steps-grid">
+        <div class="step-card">
+          <div class="step-number active">1</div>
+          <div>
+            <p class="step-title">Design approval</p>
+            <p class="step-desc">Review these wireframes. Identify any flows that need adjustment. Confirm the visual direction feels right.</p>
+          </div>
+        </div>
+
+        <div class="step-card">
+          <div class="step-number inactive">2</div>
+          <div>
+            <p class="step-title">Audio prototype</p>
+            <p class="step-desc">Build a simple audio engine to test binaural beats on your AirPods Pro. Validate the frequencies actually work for you.</p>
+          </div>
+        </div>
+
+        <div class="step-card">
+          <div class="step-number inactive">3</div>
+          <div>
+            <p class="step-title">Voice recording</p>
+            <p class="step-desc">Record the Guided Discovery protocol narration. Professional male voice, calm and unhurried tone.</p>
+          </div>
+        </div>
+
+        <div class="step-card">
+          <div class="step-number inactive">4</div>
+          <div>
+            <p class="step-title">iOS development</p>
+            <p class="step-desc">Build the app in Swift/SwiftUI with AVFoundation for audio. Native development ensures the best audio fidelity.</p>
+          </div>
+        </div>
+
+        <div class="note-card">
+          <p class="note-label">Technical note</p>
+          <p class="note-text">You'll need a Mac with Xcode to build and install. Free Apple Developer account works but apps expire after 7 days. The $99/year program removes this limitation.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+</body>
+</html>

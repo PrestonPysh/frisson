@@ -1,0 +1,863 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, viewport-fit=cover">
+  <title>Frisson</title>
+
+  <!-- PWA Meta Tags -->
+  <meta name="description" content="Find your frequency. A minimalist binaural beats meditation app.">
+  <meta name="theme-color" content="#C9A962">
+  <meta name="mobile-web-app-capable" content="yes">
+
+  <!-- iOS PWA Meta Tags -->
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <meta name="apple-mobile-web-app-title" content="Frisson">
+  <link rel="apple-touch-icon" href="icons/icon-192.png">
+
+  <!-- Manifest -->
+  <link rel="manifest" href="manifest.json">
+
+  <!-- Favicon -->
+  <link rel="icon" type="image/png" sizes="192x192" href="icons/icon-192.png">
+
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    :root {
+      --gold: #C9A962;
+      --gold-dark: #A68B4B;
+      --gold-light: #E5D4A1;
+      --text-primary: #1A1A1A;
+      --text-secondary: #8A8A8A;
+      --text-muted: #B0B0B0;
+      --bg: #FAFAFA;
+      --bg-warm: #F5F3EE;
+      --border: #E8E6E1;
+    }
+
+    html, body {
+      height: 100%;
+      overflow: hidden;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+      background: linear-gradient(180deg, var(--bg) 0%, var(--bg-warm) 100%);
+      color: var(--text-primary);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 40px 24px;
+      padding-top: max(40px, env(safe-area-inset-top));
+      padding-bottom: max(40px, env(safe-area-inset-bottom));
+      min-height: 100vh;
+      min-height: -webkit-fill-available;
+    }
+
+    .container {
+      width: 100%;
+      max-width: 400px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 32px;
+    }
+
+    /* Header */
+    .header {
+      text-align: center;
+    }
+
+    .logo {
+      font-size: 24px;
+      font-weight: 200;
+      letter-spacing: 4px;
+      color: var(--text-primary);
+      margin-bottom: 4px;
+    }
+
+    .subtitle {
+      font-size: 11px;
+      letter-spacing: 2px;
+      color: var(--text-muted);
+      text-transform: uppercase;
+    }
+
+    /* Central Visualization */
+    .visualization {
+      position: relative;
+      width: 200px;
+      height: 200px;
+    }
+
+    .ring {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      border-radius: 50%;
+      border: 1px solid rgba(201, 169, 98, 0.15);
+      transition: all 0.3s ease;
+    }
+
+    .ring-1 { width: 200px; height: 200px; }
+    .ring-2 { width: 160px; height: 160px; border-color: rgba(201, 169, 98, 0.2); }
+    .ring-3 { width: 120px; height: 120px; border-color: rgba(201, 169, 98, 0.3); }
+    .ring-4 { width: 80px; height: 80px; border-color: rgba(201, 169, 98, 0.4); }
+
+    .core {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 40px;
+      height: 40px;
+      background: linear-gradient(135deg, var(--gold) 0%, var(--gold-dark) 100%);
+      border-radius: 50%;
+      box-shadow: 0 4px 20px rgba(201, 169, 98, 0.4);
+      transition: all 0.1s ease;
+    }
+
+    .core.pulsing {
+      animation: pulse var(--pulse-duration, 166ms) ease-in-out infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% {
+        transform: translate(-50%, -50%) scale(1);
+        box-shadow: 0 4px 20px rgba(201, 169, 98, 0.4);
+      }
+      50% {
+        transform: translate(-50%, -50%) scale(1.15);
+        box-shadow: 0 8px 32px rgba(201, 169, 98, 0.6);
+      }
+    }
+
+    .playing .ring {
+      border-color: rgba(201, 169, 98, 0.3);
+    }
+
+    .playing .ring-2 { border-color: rgba(201, 169, 98, 0.35); }
+    .playing .ring-3 { border-color: rgba(201, 169, 98, 0.45); }
+    .playing .ring-4 { border-color: rgba(201, 169, 98, 0.55); }
+
+    /* Frequency Display */
+    .freq-display {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 32px;
+    }
+
+    .freq-item {
+      text-align: center;
+    }
+
+    .freq-value {
+      font-size: 32px;
+      font-weight: 200;
+      color: var(--text-primary);
+      line-height: 1;
+    }
+
+    .freq-value.accent {
+      color: var(--gold);
+    }
+
+    .freq-label {
+      font-size: 10px;
+      letter-spacing: 1px;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      margin-top: 6px;
+    }
+
+    .freq-divider {
+      width: 1px;
+      height: 48px;
+      background: var(--border);
+    }
+
+    /* Sliders */
+    .sliders {
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      gap: 24px;
+    }
+
+    .slider-group {
+      width: 100%;
+    }
+
+    .slider-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      margin-bottom: 12px;
+    }
+
+    .slider-title {
+      font-size: 12px;
+      font-weight: 400;
+      color: var(--text-secondary);
+    }
+
+    .slider-range {
+      font-size: 11px;
+      color: var(--text-muted);
+    }
+
+    .slider-track {
+      position: relative;
+      width: 100%;
+      height: 44px;
+      background: var(--bg-warm);
+      border-radius: 22px;
+      cursor: pointer;
+      touch-action: none;
+    }
+
+    .slider-fill {
+      position: absolute;
+      left: 0;
+      top: 0;
+      height: 100%;
+      background: linear-gradient(90deg, var(--gold), var(--gold-light));
+      border-radius: 22px;
+      pointer-events: none;
+    }
+
+    .slider-thumb {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 36px;
+      height: 36px;
+      background: white;
+      border-radius: 50%;
+      box-shadow: 0 2px 12px rgba(0, 0, 0, 0.15);
+      pointer-events: none;
+      transition: box-shadow 0.2s ease;
+    }
+
+    .slider-track:active .slider-thumb {
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+    }
+
+    /* Timer */
+    .timer-section {
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 16px;
+    }
+
+    .duration-display {
+      display: flex;
+      align-items: baseline;
+      gap: 6px;
+    }
+
+    .duration-value {
+      font-size: 40px;
+      font-weight: 200;
+      color: var(--text-primary);
+      line-height: 1;
+    }
+
+    .duration-unit {
+      font-size: 14px;
+      font-weight: 400;
+      color: var(--text-muted);
+      letter-spacing: 0.5px;
+    }
+
+    .timer-display {
+      font-size: 14px;
+      font-weight: 400;
+      color: var(--text-secondary);
+      display: none;
+    }
+
+    .timer-display.visible {
+      display: block;
+    }
+
+    /* Play Button */
+    .play-btn {
+      width: 100%;
+      height: 56px;
+      background: linear-gradient(135deg, var(--gold) 0%, var(--gold-dark) 100%);
+      border: none;
+      border-radius: 28px;
+      color: white;
+      font-size: 16px;
+      font-weight: 500;
+      cursor: pointer;
+      box-shadow: 0 4px 24px rgba(201, 169, 98, 0.35);
+      transition: all 0.2s ease;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+    }
+
+    .play-btn:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 6px 28px rgba(201, 169, 98, 0.45);
+    }
+
+    .play-btn:active {
+      transform: translateY(0);
+    }
+
+    .play-btn.playing {
+      background: var(--text-primary);
+    }
+
+    /* State indicator */
+    .state-label {
+      font-size: 11px;
+      letter-spacing: 1px;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      text-align: center;
+    }
+
+    /* Brainwave Guide */
+    .brainwave-guide {
+      display: flex;
+      justify-content: center;
+      gap: 24px;
+      width: 100%;
+      padding: 0 8px;
+    }
+
+    .brainwave-item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 6px;
+      opacity: 0.4;
+      transition: all 0.3s ease;
+    }
+
+    .brainwave-item.active {
+      opacity: 1;
+    }
+
+    .brainwave-bar {
+      width: 40px;
+      height: 3px;
+      border-radius: 2px;
+      background: var(--border);
+      transition: all 0.3s ease;
+    }
+
+    .brainwave-item.active .brainwave-bar {
+      height: 4px;
+    }
+
+    .brainwave-bar.delta {
+      background: linear-gradient(90deg, #8B7355, #A68B4B);
+    }
+
+    .brainwave-bar.theta {
+      background: linear-gradient(90deg, var(--gold), var(--gold-light));
+    }
+
+    .brainwave-bar.alpha {
+      background: linear-gradient(90deg, #B8A978, #D4C896);
+    }
+
+    .brainwave-item.active .brainwave-bar.delta,
+    .brainwave-item.active .brainwave-bar.theta,
+    .brainwave-item.active .brainwave-bar.alpha {
+      box-shadow: 0 2px 8px rgba(201, 169, 98, 0.4);
+    }
+
+    .brainwave-info {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 2px;
+    }
+
+    .brainwave-name {
+      font-size: 11px;
+      font-weight: 500;
+      color: var(--text-secondary);
+      letter-spacing: 0.5px;
+    }
+
+    .brainwave-item.active .brainwave-name {
+      color: var(--text-primary);
+    }
+
+    .brainwave-range {
+      font-size: 9px;
+      color: var(--text-muted);
+      letter-spacing: 0.5px;
+    }
+
+    .brainwave-desc {
+      font-size: 9px;
+      color: var(--text-muted);
+      letter-spacing: 0.3px;
+    }
+
+    .brainwave-item.active .brainwave-desc {
+      color: var(--gold);
+    }
+
+    /* AirPods notice */
+    .notice {
+      font-size: 11px;
+      color: var(--text-muted);
+      text-align: center;
+      line-height: 1.6;
+      max-width: 280px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container" id="app">
+
+    <header class="header">
+      <h1 class="logo">FRISSON</h1>
+      <p class="subtitle">Find your frequency</p>
+    </header>
+
+    <div class="visualization" id="visualization">
+      <div class="ring ring-1"></div>
+      <div class="ring ring-2"></div>
+      <div class="ring ring-3"></div>
+      <div class="ring ring-4"></div>
+      <div class="core" id="core"></div>
+    </div>
+
+    <div class="freq-display">
+      <div class="freq-item">
+        <div class="freq-value" id="carrierDisplay">132</div>
+        <div class="freq-label">Hz Carrier</div>
+      </div>
+      <div class="freq-divider"></div>
+      <div class="freq-item">
+        <div class="freq-value accent" id="beatDisplay">6.0</div>
+        <div class="freq-label">Hz Beat</div>
+      </div>
+    </div>
+
+    <p class="state-label" id="stateLabel">Theta State — Meditation</p>
+
+    <!-- Brainwave Guide -->
+    <div class="brainwave-guide">
+      <div class="brainwave-item" id="deltaGuide">
+        <div class="brainwave-bar delta"></div>
+        <div class="brainwave-info">
+          <span class="brainwave-name">Delta</span>
+          <span class="brainwave-range">2.5–4 Hz</span>
+        </div>
+        <span class="brainwave-desc">Deep rest</span>
+      </div>
+      <div class="brainwave-item" id="thetaGuide">
+        <div class="brainwave-bar theta"></div>
+        <div class="brainwave-info">
+          <span class="brainwave-name">Theta</span>
+          <span class="brainwave-range">4–8 Hz</span>
+        </div>
+        <span class="brainwave-desc">Meditation</span>
+      </div>
+      <div class="brainwave-item" id="alphaGuide">
+        <div class="brainwave-bar alpha"></div>
+        <div class="brainwave-info">
+          <span class="brainwave-name">Alpha</span>
+          <span class="brainwave-range">8–12 Hz</span>
+        </div>
+        <span class="brainwave-desc">Relaxed focus</span>
+      </div>
+    </div>
+
+    <div class="sliders">
+      <div class="slider-group">
+        <div class="slider-header">
+          <span class="slider-title">Carrier Frequency</span>
+          <span class="slider-range">80–400 Hz</span>
+        </div>
+        <div class="slider-track" id="carrierSlider">
+          <div class="slider-fill" id="carrierFill"></div>
+          <div class="slider-thumb" id="carrierThumb"></div>
+        </div>
+      </div>
+
+      <div class="slider-group">
+        <div class="slider-header">
+          <span class="slider-title">Beat Frequency</span>
+          <span class="slider-range">2.5–12 Hz</span>
+        </div>
+        <div class="slider-track" id="beatSlider">
+          <div class="slider-fill" id="beatFill"></div>
+          <div class="slider-thumb" id="beatThumb"></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="timer-section">
+      <div class="duration-display">
+        <span class="duration-value" id="durationDisplay">15</span>
+        <span class="duration-unit">min</span>
+      </div>
+      <div class="slider-group" style="width: 100%;">
+        <div class="slider-header">
+          <span class="slider-title">Duration</span>
+          <span class="slider-range">1–60 min</span>
+        </div>
+        <div class="slider-track" id="durationSlider">
+          <div class="slider-fill" id="durationFill"></div>
+          <div class="slider-thumb" id="durationThumb"></div>
+        </div>
+      </div>
+      <div class="timer-display" id="timerDisplay">15:00 remaining</div>
+    </div>
+
+    <button class="play-btn" id="playBtn">
+      <span id="playBtnText">Begin Session</span>
+    </button>
+
+    <p class="notice">
+      Connect AirPods for best experience.<br>
+      Binaural beats require stereo headphones.
+    </p>
+
+  </div>
+
+  <script>
+    // Register Service Worker
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('/sw.js')
+          .then(reg => console.log('Frisson: Service Worker registered'))
+          .catch(err => console.log('Frisson: Service Worker registration failed', err));
+      });
+    }
+
+    // Audio Context and Oscillators
+    let audioContext = null;
+    let leftOscillator = null;
+    let rightOscillator = null;
+    let leftGain = null;
+    let rightGain = null;
+    let merger = null;
+    let masterGain = null;
+
+    // State
+    let isPlaying = false;
+    let carrierFreq = 132;
+    let beatFreq = 6.0;
+    let duration = 15;
+    let timeRemaining = 0;
+    let timerInterval = null;
+
+    // DOM Elements
+    const app = document.getElementById('app');
+    const visualization = document.getElementById('visualization');
+    const core = document.getElementById('core');
+    const carrierDisplay = document.getElementById('carrierDisplay');
+    const beatDisplay = document.getElementById('beatDisplay');
+    const stateLabel = document.getElementById('stateLabel');
+    const carrierSlider = document.getElementById('carrierSlider');
+    const carrierFill = document.getElementById('carrierFill');
+    const carrierThumb = document.getElementById('carrierThumb');
+    const beatSlider = document.getElementById('beatSlider');
+    const beatFill = document.getElementById('beatFill');
+    const beatThumb = document.getElementById('beatThumb');
+    const playBtn = document.getElementById('playBtn');
+    const playBtnText = document.getElementById('playBtnText');
+    const timerDisplay = document.getElementById('timerDisplay');
+    const durationDisplay = document.getElementById('durationDisplay');
+    const durationSlider = document.getElementById('durationSlider');
+    const durationFill = document.getElementById('durationFill');
+    const durationThumb = document.getElementById('durationThumb');
+    const deltaGuide = document.getElementById('deltaGuide');
+    const thetaGuide = document.getElementById('thetaGuide');
+    const alphaGuide = document.getElementById('alphaGuide');
+
+    // Initialize Audio Context
+    function initAudio() {
+      if (audioContext) return;
+
+      audioContext = new (window.AudioContext || window.webkitAudioContext)();
+
+      // Create oscillators for left and right channels
+      leftOscillator = audioContext.createOscillator();
+      rightOscillator = audioContext.createOscillator();
+
+      // Pure sine waves
+      leftOscillator.type = 'sine';
+      rightOscillator.type = 'sine';
+
+      // Create gain nodes for volume control
+      leftGain = audioContext.createGain();
+      rightGain = audioContext.createGain();
+      leftGain.gain.value = 0;
+      rightGain.gain.value = 0;
+
+      // Create channel merger for stereo output
+      merger = audioContext.createChannelMerger(2);
+
+      // Master gain - capped at 0.5 to limit max output to ~75 dBA
+      // This ensures even at 100% device volume, output stays safe
+      masterGain = audioContext.createGain();
+      masterGain.gain.value = 0.5;
+
+      // Connect: oscillators -> gains -> merger -> master -> destination
+      leftOscillator.connect(leftGain);
+      rightOscillator.connect(rightGain);
+      leftGain.connect(merger, 0, 0);  // Left channel
+      rightGain.connect(merger, 0, 1); // Right channel
+      merger.connect(masterGain);
+      masterGain.connect(audioContext.destination);
+
+      // Start oscillators (they run continuously, we control volume)
+      leftOscillator.start();
+      rightOscillator.start();
+
+      updateFrequencies();
+    }
+
+    // Update oscillator frequencies
+    function updateFrequencies() {
+      if (!audioContext) return;
+
+      const leftFreq = carrierFreq;
+      const rightFreq = carrierFreq + beatFreq;
+
+      leftOscillator.frequency.setValueAtTime(leftFreq, audioContext.currentTime);
+      rightOscillator.frequency.setValueAtTime(rightFreq, audioContext.currentTime);
+
+      // Update pulse animation speed based on beat frequency
+      const pulseDuration = 1000 / beatFreq;
+      core.style.setProperty('--pulse-duration', `${pulseDuration}ms`);
+    }
+
+    // Start playing
+    function startPlaying() {
+      initAudio();
+
+      if (audioContext.state === 'suspended') {
+        audioContext.resume();
+      }
+
+      // Fade in
+      const now = audioContext.currentTime;
+      leftGain.gain.setValueAtTime(0, now);
+      rightGain.gain.setValueAtTime(0, now);
+      leftGain.gain.linearRampToValueAtTime(1, now + 0.5);
+      rightGain.gain.linearRampToValueAtTime(1, now + 0.5);
+
+      isPlaying = true;
+      visualization.classList.add('playing');
+      core.classList.add('pulsing');
+      playBtn.classList.add('playing');
+      playBtnText.textContent = 'End Session';
+      timerDisplay.classList.add('visible');
+
+      // Start timer
+      timeRemaining = duration * 60;
+      updateTimerDisplay();
+      timerInterval = setInterval(() => {
+        timeRemaining--;
+        updateTimerDisplay();
+        if (timeRemaining <= 0) {
+          stopPlaying();
+        }
+      }, 1000);
+
+      // Prevent screen from sleeping during session
+      if ('wakeLock' in navigator) {
+        navigator.wakeLock.request('screen').catch(() => {});
+      }
+    }
+
+    // Stop playing
+    function stopPlaying() {
+      if (!audioContext) return;
+
+      // Fade out
+      const now = audioContext.currentTime;
+      leftGain.gain.setValueAtTime(leftGain.gain.value, now);
+      rightGain.gain.setValueAtTime(rightGain.gain.value, now);
+      leftGain.gain.linearRampToValueAtTime(0, now + 0.5);
+      rightGain.gain.linearRampToValueAtTime(0, now + 0.5);
+
+      isPlaying = false;
+      visualization.classList.remove('playing');
+      core.classList.remove('pulsing');
+      playBtn.classList.remove('playing');
+      playBtnText.textContent = 'Begin Session';
+      timerDisplay.classList.remove('visible');
+
+      // Stop timer
+      if (timerInterval) {
+        clearInterval(timerInterval);
+        timerInterval = null;
+      }
+    }
+
+    // Update timer display
+    function updateTimerDisplay() {
+      const minutes = Math.floor(timeRemaining / 60);
+      const seconds = timeRemaining % 60;
+      timerDisplay.textContent = `${minutes}:${seconds.toString().padStart(2, '0')} remaining`;
+    }
+
+    // Get brainwave state label
+    function getStateLabel(freq) {
+      if (freq < 4) return 'Delta State — Deep Rest';
+      if (freq < 8) return 'Theta State — Meditation';
+      if (freq < 12) return 'Alpha State — Relaxed Focus';
+      if (freq < 30) return 'Beta State — Alert';
+      return 'Gamma State';
+    }
+
+    // Update brainwave guide highlighting
+    function updateBrainwaveGuide(freq) {
+      deltaGuide.classList.remove('active');
+      thetaGuide.classList.remove('active');
+      alphaGuide.classList.remove('active');
+
+      if (freq < 4) {
+        deltaGuide.classList.add('active');
+      } else if (freq < 8) {
+        thetaGuide.classList.add('active');
+      } else {
+        alphaGuide.classList.add('active');
+      }
+    }
+
+    // Update UI
+    function updateUI() {
+      carrierDisplay.textContent = Math.round(carrierFreq);
+      beatDisplay.textContent = beatFreq.toFixed(1);
+      stateLabel.textContent = getStateLabel(beatFreq);
+      updateBrainwaveGuide(beatFreq);
+
+      // Update slider positions
+      const carrierPercent = (carrierFreq - 80) / 320;
+      carrierFill.style.width = `${carrierPercent * 100}%`;
+      carrierThumb.style.left = `${carrierPercent * 100}%`;
+      carrierThumb.style.transform = `translateY(-50%) translateX(-50%)`;
+
+      const beatPercent = (beatFreq - 2.5) / 9.5;
+      beatFill.style.width = `${beatPercent * 100}%`;
+      beatThumb.style.left = `${beatPercent * 100}%`;
+      beatThumb.style.transform = `translateY(-50%) translateX(-50%)`;
+
+      // Update duration slider
+      const durationPercent = (duration - 1) / 59;
+      durationFill.style.width = `${durationPercent * 100}%`;
+      durationThumb.style.left = `${durationPercent * 100}%`;
+      durationThumb.style.transform = `translateY(-50%) translateX(-50%)`;
+      durationDisplay.textContent = duration;
+    }
+
+    // Slider interaction
+    function setupSlider(track, fill, thumb, min, max, getValue, setValue, step = 1) {
+      let isDragging = false;
+
+      function updateFromPosition(clientX) {
+        const rect = track.getBoundingClientRect();
+        let percent = (clientX - rect.left) / rect.width;
+        percent = Math.max(0, Math.min(1, percent));
+
+        let value = min + percent * (max - min);
+
+        // Snap to step
+        value = Math.round(value / step) * step;
+        value = Math.max(min, Math.min(max, value));
+
+        setValue(value);
+        updateUI();
+        updateFrequencies();
+      }
+
+      track.addEventListener('mousedown', (e) => {
+        isDragging = true;
+        updateFromPosition(e.clientX);
+      });
+
+      track.addEventListener('touchstart', (e) => {
+        isDragging = true;
+        updateFromPosition(e.touches[0].clientX);
+      }, { passive: true });
+
+      document.addEventListener('mousemove', (e) => {
+        if (isDragging) {
+          updateFromPosition(e.clientX);
+        }
+      });
+
+      document.addEventListener('touchmove', (e) => {
+        if (isDragging) {
+          updateFromPosition(e.touches[0].clientX);
+        }
+      }, { passive: true });
+
+      document.addEventListener('mouseup', () => {
+        isDragging = false;
+      });
+
+      document.addEventListener('touchend', () => {
+        isDragging = false;
+      });
+    }
+
+    // Initialize sliders
+    setupSlider(
+      carrierSlider, carrierFill, carrierThumb,
+      80, 400,
+      () => carrierFreq,
+      (v) => { carrierFreq = v; },
+      4
+    );
+
+    setupSlider(
+      beatSlider, beatFill, beatThumb,
+      2.5, 12,
+      () => beatFreq,
+      (v) => { beatFreq = v; },
+      0.5
+    );
+
+    setupSlider(
+      durationSlider, durationFill, durationThumb,
+      1, 60,
+      () => duration,
+      (v) => { duration = v; },
+      1
+    );
+
+    // Play button
+    playBtn.addEventListener('click', () => {
+      if (isPlaying) {
+        stopPlaying();
+      } else {
+        startPlaying();
+      }
+    });
+
+    // Initial UI update
+    updateUI();
+  </script>
+</body>
+</html>
