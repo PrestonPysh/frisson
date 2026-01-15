@@ -1,5 +1,5 @@
 // Frisson Service Worker
-const CACHE_NAME = 'frisson-v2';
+const CACHE_NAME = 'frisson-v3';
 const urlsToCache = [
   './',
   './index.html',
