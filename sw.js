@@ -1,11 +1,11 @@
 // Frisson Service Worker
-const CACHE_NAME = 'frisson-v1';
+const CACHE_NAME = 'frisson-v2';
 const urlsToCache = [
-  '/',
-  '/index.html',
-  '/manifest.json',
-  '/icons/icon-192.png',
-  '/icons/icon-512.png'
+  './',
+  './index.html',
+  './manifest.json',
+  './icons/icon-192.png',
+  './icons/icon-512.png'
 ];
 
 // Install event - cache resources
@@ -47,7 +47,7 @@ self.addEventListener('fetch', (event) => {
       .catch(() => {
         // If both fail, return a basic offline page for navigation requests
         if (event.request.mode === 'navigate') {
-          return caches.match('/index.html');
+          return caches.match('./index.html');
         }
       })
   );
