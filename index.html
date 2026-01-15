@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -837,7 +838,7 @@
         <div class="core"></div>
       </div>
 
-      <h2 class="intro-title">WELCOME</h2>
+      <h2 class="intro-title">ABOUT</h2>
 
       <div class="intro-text">
         <p>You're about to discover something remarkable — your brain's unique resonant frequency.</p>
@@ -850,8 +851,7 @@
       </div>
 
       <div class="intro-buttons">
-        <button class="intro-begin-btn" id="introBeginBtn">Begin Discovery</button>
-        <button class="intro-skip-btn" id="introSkipBtn">Skip Intro</button>
+        <button class="intro-begin-btn" id="introBackBtn" style="display: none;">Back to Home</button>
       </div>
     </div>
   </div>
@@ -874,13 +874,13 @@
 
     <!-- Mode Selection (shown initially) -->
     <div class="mode-selection" id="modeSelection">
-      <button class="mode-btn primary" id="guidedDiscoveryBtn">
-        <div class="mode-btn-title">Guided Discovery</div>
-        <div class="mode-btn-desc">Find your optimal frequency with step-by-step guidance</div>
+      <button class="mode-btn primary" id="startSessionBtn">
+        <div class="mode-btn-title">Start Session</div>
+        <div class="mode-btn-desc">Begin your binaural beats meditation</div>
       </button>
-      <button class="mode-btn" id="manualModeBtn">
-        <div class="mode-btn-title">Manual Explore</div>
-        <div class="mode-btn-desc">Freely adjust carrier and beat frequencies</div>
+      <button class="mode-btn" id="aboutBtn">
+        <div class="mode-btn-title">About Frisson</div>
+        <div class="mode-btn-desc">Learn how binaural beats work</div>
       </button>
     </div>
 
@@ -1059,12 +1059,11 @@
     // Mode selection elements
     const modeSelection = document.getElementById('modeSelection');
     const manualControls = document.getElementById('manualControls');
-    const guidedDiscoveryBtn = document.getElementById('guidedDiscoveryBtn');
-    const manualModeBtn = document.getElementById('manualModeBtn');
+    const startSessionBtn = document.getElementById('startSessionBtn');
+    const aboutBtn = document.getElementById('aboutBtn');
     const backToModesBtn = document.getElementById('backToModesBtn');
     const introScreen = document.getElementById('introScreen');
-    const introBeginBtn = document.getElementById('introBeginBtn');
-    const introSkipBtn = document.getElementById('introSkipBtn');
+    const introBackBtn = document.getElementById('introBackBtn');
 
     // Mode selection handlers
     function showModeSelection() {
@@ -1079,7 +1078,7 @@
       updateUI();
     }
 
-    // Audio narration for intro
+    // Audio narration for About screen
     let introAudio = null;
 
     function playIntroAudio() {
@@ -1089,10 +1088,17 @@
         introAudio.preload = 'auto';
       }
 
+      // Show back button when audio ends
+      introAudio.onended = () => {
+        introBackBtn.style.display = 'block';
+      };
+
       // Reset and play
       introAudio.currentTime = 0;
       introAudio.play().catch(err => {
         console.log('Frisson: Audio playback requires user interaction', err);
+        // Show button anyway if audio fails
+        introBackBtn.style.display = 'block';
       });
     }
 
@@ -1103,29 +1109,23 @@
       }
     }
 
-    function showIntroScreen() {
+    function showAboutScreen() {
+      introBackBtn.style.display = 'none'; // Hide button initially
       introScreen.classList.add('visible');
       // Start narration after a brief delay
       setTimeout(playIntroAudio, 600);
     }
 
-    function hideIntroScreen() {
+    function hideAboutScreen() {
       introScreen.classList.remove('visible');
       stopIntroAudio();
     }
 
-    function startGuidedDiscovery() {
-      hideIntroScreen();
-      // For now, go to manual mode - guided discovery will be built out next
-      showManualMode();
-    }
-
-    // Mode button event listeners
-    guidedDiscoveryBtn.addEventListener('click', showIntroScreen);
-    manualModeBtn.addEventListener('click', showManualMode);
+    // Button event listeners
+    startSessionBtn.addEventListener('click', showManualMode);
+    aboutBtn.addEventListener('click', showAboutScreen);
     backToModesBtn.addEventListener('click', showModeSelection);
-    introBeginBtn.addEventListener('click', startGuidedDiscovery);
-    introSkipBtn.addEventListener('click', startGuidedDiscovery);
+    introBackBtn.addEventListener('click', hideAboutScreen);
 
     // Initialize Audio Context
     function initAudio() {
